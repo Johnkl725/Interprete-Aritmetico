@@ -1,0 +1,49 @@
+header{
+    color: black;
+    padding: 5px;
+    margin: auto;
+    text-align: center;
+    font-family: sans-serif;
+}
+main{
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    background-color: #f0f0f0;
+    margin: auto;
+    padding: 1px;
+}
+a{
+    color: black;
+    font-size: 20px;
+    text-decoration: none;
+    margin: auto;
+    padding: 1px;
+}
+#codeInput {
+    width: 100%; /* O puedes especificar una anchura fija, por ejemplo, 500px */
+    height: 200px; /* Ajusta la altura según necesites */
+}
+.container {
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.output-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+
+pre {
+    white-space: pre-wrap;
+    font-size: 20px;
+}
