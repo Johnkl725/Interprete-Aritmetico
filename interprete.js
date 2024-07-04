@@ -26,7 +26,7 @@ class ArithmeticInterpreter {
                 }
             } else if (char === "." && currentToken.match(/^\d+$/)) {
                 currentToken += char;
-            } else if (char === "-" && i + 1 < expression.length && /[a-zA-Z0-9_]/.test(expression[i + 1])) {
+            } else if (char === "-" && tokens[i+1]=== (currentToken === "" || tokens[tokens.length - 1] === "(")) {
                 currentToken += char;
             } else {
                 pushToken();
@@ -82,21 +82,52 @@ class ArithmeticInterpreter {
                 return ["var", tokens.shift()];
             } else {
                 if (!numberPattern.test(tokens[0])) {
-                    throw new Error("Se esperaba un número\n");
+                    throw new Error(`Se esperaba un número, pero se encontró '${tokens[0]}'\n`);
                 }
                 return ["num", parseFloat(tokens.shift())];
             }
         }
 
         function parseAssignment() {
-            const variable = tokens.shift();
-            if (tokens.shift() !== "=") throw new Error("Se esperaba '='\n");
-            const expr = parseExpression();
-            return ["assign", variable, expr];
+            const assignments = [];
+            while (tokens.length) {
+                const variable = tokens.shift();
+                const operator = tokens.shift();
+                let expr;
+                if (operator === "=") {
+                    expr = parseExpression();
+                    assignments.push(["assign", variable, expr]);
+                } else if (["+=","-=","*=","/="].includes(operator)) {
+                    expr = parseExpression();
+                    switch (operator) {
+                        case "+=":
+                            assignments.push(["assign_add", variable, expr]);
+                            break;
+                        case "-=":
+                            assignments.push(["assign_subtract", variable, expr]);
+                            break;
+                        case "*=":
+                            assignments.push(["assign_multiply", variable, expr]);
+                            break;
+                        case "/=":
+                            assignments.push(["assign_divide", variable, expr]);
+                            break;
+                    }
+                } else {
+                    throw new Error("Se esperaba '=' o un operador de asignación incremental\n");
+                }
+
+                if (tokens[0] === ";") {
+                    tokens.shift();
+                } else {
+                    break;
+                }
+            }
+            return assignments;
         }
 
         function parseCout() {
-            tokens.shift();
+            tokens.shift(); // remove 'cout'
             if (tokens.shift() !== "<" || tokens.shift() !== "<") throw new Error("Se esperaba '<<'\n");
             const expr = parseExpression();
             return ["cout", expr];
@@ -107,7 +138,8 @@ class ArithmeticInterpreter {
             if (tokens[0] === "cout") {
                 ast.push(parseCout());
             } else if (/^[a-zA-Z_]\w*$/.test(tokens[0]) && tokens[1] === "=") {
-                ast.push(parseAssignment());
+                const assignments = parseAssignment();
+                ast.push(...assignments);
             } else {
                 ast.push(parseExpression());
             }
@@ -151,6 +183,33 @@ class ArithmeticInterpreter {
                         }
                         self.variables[variable] = value;
                         return value;
+                    case "assign_add":
+                    case "assign_subtract":
+                    case "assign_multiply":
+                    case "assign_divide":
+                        const varName = node[1];
+                        const incValue = evalNode(node[2]);
+                        if (typeof incValue !== "number") {
+                            throw new Error("Asignación incremental solo permite números\n");
+                        }
+                        if (!(varName in self.variables)) {
+                            throw new Error(`Variable '${varName}' no definida\n`);
+                        }
+                        switch (op) {
+                            case "assign_add":
+                                self.variables[varName] += incValue;
+                                break;
+                            case "assign_subtract":
+                                self.variables[varName] -= incValue;
+                                break;
+                            case "assign_multiply":
+                                self.variables[varName] *= incValue;
+                                break;
+                            case "assign_divide":
+                                self.variables[varName] /= incValue;
+                                break;
+                        }
+                        return self.variables[varName];
                     case "var":
                         if (!(node[1] in self.variables)) {
                             throw new Error(`Variable '${node[1]}' no definida\n`);
@@ -222,7 +281,6 @@ function interpretCode() {
         }
         try {
             const results = interpreter.interpret(trimmedLine);
-            console.log(results);
             for (const result of results) {
                 if (result.type === "cout") {
                     coutOutputs += `${result.value}\n`;
@@ -230,14 +288,10 @@ function interpretCode() {
                     outputElement.textContent += `Error para '${trimmedLine}': ${result.value}\n`;
                 }
             }
-        } catch (e) {
-            outputElement.textContent += `Error para '${trimmedLine}': ${e.message}\n`;
+        } catch (error) {
+            outputElement.textContent += `Error para '${trimmedLine}': ${error.message}\n`;
         }
     }
 
-    if (coutOutputs) {
-        outputElement.textContent += `${coutOutputs}`;
-    }
-
-    outputElement.scrollTop = outputElement.scrollHeight;
+    outputElement.textContent += coutOutputs;
 }
