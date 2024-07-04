@@ -9,17 +9,10 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">Interprete Aritmetico</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-              <a class="nav-item nav-link active" href="#">Interprete</a>
-              <a class="nav-item nav-link" href="index.html">Indice</a>
-            </div>
-          </div>
+        <nav>
+          <a href="#">Interprete Aritmetico</a>
+          <a href="#">Interprete</a>
+          <a href="index.html">Indice</a>
         </nav>
     </header>
     <main>
@@ -31,13 +24,15 @@
                   <button class="btn btn-outline-secondary" type="button" onclick="interpretCode()">Run</button>
               </div>
           </div>
-        </div>
-        
-        <div class="output-container">
-            <h1 class="display-5">Salida: </h1>
+          <div class="output-container">
+            <h2 class="display-5">Salida</h1>
+            <textarea readonly id="output" class="form-control" placeholder="Ouput" aria-label="Recipient's username" aria-describedby="basic-addon2"></textarea>
             <pre id="output"></pre>
+          </div>
+          
         </div>
     </main>
+    
     <script src="interprete.js"></script>
 </body>
 </html>

@@ -1,16 +1,50 @@
-header{
-    color: black;
-    padding: 5px;
+@import url('https://fonts.googleapis.com/css2?family=Wittgenstein:ital,wght@0,400..900;1,400..900&display=swap');
+body{
+    box-sizing: border-box;
+    background-color: black;
     margin: auto;
-    text-align: center;
-    font-family: sans-serif;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+
+header{
+    background-color: #ccc;
+    box-sizing: border-box;
+    color: black;
+    padding: 10px;
+    margin: auto;
+    width: auto;
+    font-family: 'Wittgenstein', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+nav{
+    display: flex;
+    gap: 50px;
+}
+a{
+    font-family: 'Wittgenstein', sans-serif;
+    font-size: 24px;
+    border-radius: 15px solid black;
+    color: black;
+    text-decoration: none;
+}
+a:hover{
+    background-color: #605c5c;
+}
+.display-3{
+    font-family: 'Wittgenstein', sans-serif;
 }
 main{
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f0f0f0;
+    background-color: black;
     margin: auto;
-    padding: 1px; 
+    padding: 1px;
+    display: flex; 
+    gap: 30px;
 }
 .form-group{
     width: 70%;
@@ -27,8 +61,11 @@ section{
 a{
     color: black;
     font-size: 20px;
-    border-radius: 1px solid black;
     text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    padding: 15px;
 }
 p{
     padding: 15px;

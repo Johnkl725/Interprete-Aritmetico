@@ -1,37 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Wittgenstein:ital,wght@0,400..900;1,400..900&display=swap');
 header{
+    background-color: #ccc;
+    box-sizing: border-box;
     color: black;
-    padding: 5px;
+    padding: 10px;
     margin: auto;
-    text-align: center;
-    font-family: sans-serif;
+    width: auto;
+    font-family: 'Wittgenstein', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
-main{
-    font-family: Arial, sans-serif;
-    line-height: 1.5;
-    background-color: #f0f0f0;
+body{
+    box-sizing: border-box;
+    background-color: black;
     margin: auto;
-    padding: 1px;
+    display: flex;
+    gap: 50px;
+    flex-direction: column;
+}
+nav{
+    display: flex;
+    gap: 80px;
 }
 a{
+    font-family: 'Wittgenstein', sans-serif;
+    font-size: 24px;
+    border-radius: 15px solid black;
     color: black;
-    font-size: 20px;
     text-decoration: none;
+}
+a:hover{
+    background-color: #605c5c;
+}
+main{
+    font-family: 'Wittgenstein', sans-serif;
+    box-sizing: border-box;
+    line-height: 1.5;
+    background-color: black;
     margin: auto;
     padding: 1px;
+    width: 100%;
 }
 #codeInput {
-    width: 100%; /* O puedes especificar una anchura fija, por ejemplo, 500px */
-    height: 200px; /* Ajusta la altura según necesites */
+    width: 80%; 
+    height: 200px;
 }
 .container {
+    gap: 20px;
+    box-sizing: border-box;
     margin: auto;
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
-    padding: 20px;
+    padding: 5% 6%;
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 .output-container {
     margin-top: 20px;
     padding: 10px;
@@ -40,12 +66,25 @@ a{
     border: 1px solid #ccc;
     border-radius: 4px;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
+}
+.form-control{
+    
+    padding: 10px;
+    
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.display-4{
+    margin: auto;
+    padding: 5px 3px;
+    color: black;
+    
 }
 .display-5{
     margin: auto;
-    padding: 5px 0px;
-    color: black;
+    padding: 5px 3px;
+    color: red;
 }
 
 
@@ -55,6 +94,27 @@ pre {
     margin: auto;
     color: black;
 }
-#error {
-    color: red;
+footer{
+    margin: auto;
+    padding: 10px;
+    background-color: #ccc;
+    box-sizing: border-box;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    width: 100%;
+}
+.foot1{
+    margin: auto;
+    text-align: center;
+    font-family: 'Wittgenstein', sans-serif;
+    
+}
+img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: auto;
+    padding: 5px;
+    
 }
