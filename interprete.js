@@ -41,6 +41,7 @@ class ArithmeticInterpreter {
 
         return tokens;
     }
+
     parse(tokens) {
         const self = this;
 
@@ -97,9 +98,8 @@ class ArithmeticInterpreter {
         function parseCout() {
             tokens.shift();
             if (tokens.shift() !== "<" || tokens.shift() !== "<") throw new Error("Se esperaba '<<'\n");
-            const variable = tokens.shift();
-            console.log(variable);
-            return ["cout", variable];
+            const expr = parseExpression();
+            return ["cout", expr];
         }
 
         const ast = [];
@@ -159,11 +159,13 @@ class ArithmeticInterpreter {
                     case "num":
                         return node[1];
                     case "cout":
-                        const varName = node[1];
-                        if (varName in self.variables) {
-                            results.push({ type: "cout", value: self.variables[varName] });
+                        const exprResult = evalNode(node[1]);
+                        if (typeof exprResult === "number") {
+                            results.push({ type: "cout", value: exprResult });
+                        } else if (typeof exprResult === "string" && exprResult in self.variables) {
+                            results.push({ type: "cout", value: self.variables[exprResult] });
                         } else {
-                            results.push({ type: "error", value: `Error: variable '${varName}' no definida.` });
+                            results.push({ type: "error", value: `Error: expresión '${exprResult}' no válida.` });
                         }
                         return null;
                 }
@@ -237,6 +239,5 @@ function interpretCode() {
         outputElement.textContent += `${coutOutputs}`;
     }
 
-    
     outputElement.scrollTop = outputElement.scrollHeight;
 }
