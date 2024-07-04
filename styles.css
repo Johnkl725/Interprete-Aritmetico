@@ -87,8 +87,6 @@ p{
 }
 .box1{
     background-color: #f23;
-    height: 70%;
-    width: 70%;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     color: white;
@@ -106,8 +104,15 @@ p{
     margin: auto;
 }
 img{
-    width: 70%;
-    height: 70%;
+    width: 100%;
+    height: 100%;
     margin: auto;
     display: block;
+}
+.gramatica{
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: block;
+
 }

@@ -19,30 +19,14 @@
         <section>
             <h1 class="display-3">Gramatica</h1>
             <div class="box1">
-                <samp>
-                    programa            ::=    declaraciones | sentencias<br>
-                    declaraciones      ::=    declaración | declaraciones | λ<br>
-                    declaración        ::=    tipo  identificadores ;<br>
-                    tipo                      ::=    entero  | real <br>
-                    identificadores     ::=    identificador | identificador , identificadores<br>
-                    identificador        ::=    [a-zA-Z_][a-zA-Z0-9_]*  <br>
-                    sentencias            ::=    sentencia  | sentencias  | λ<br>
-                    sentencia             ::=    asignación  | operación  | imprimir | leer<br>
-                    expresión            ::=    suma<br>
-                    suma                    ::=    término ( ( "+" | "-" ) término )*<br>
-                    término                ::=    operando ( ( "*" | "/" ) operando )*<br>
-                    operando             ::=    identificador | número | "(" expresión ")"<br>
-                    número                ::=    [0-9]+(\.[0-9]+)?<br>
-                    operación            ::=    expresión   operador    expresión<br>
-                    operador              ::=    + | - | *  | /  | =  <br>
-                    imprimir              ::=    cout << expresión ;<br>
-                    leer                      ::=    cin >> identificador;<br>
-                </samp>
+                <img class="gramatica" src="img/Gramatica.jpg" alt="">
             </div>    
         </section>
         <section>
             <h1 class="display-3">Automata</h1>
-            <img src="img/AFD.jpeg" alt="AFD">
+            <div class="box1">
+                <img class="automata" src="img/AFD.jpeg" alt="">
+            </div>
         </section>
     </main>
 </body>
