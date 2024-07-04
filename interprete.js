@@ -55,28 +55,35 @@ class ArithmeticInterpreter {
         }
 
         function parseFactor() {
+            // Expresión regular para validar números (enteros y flotantes)
+            const numberPattern = /^-?\d+(\.\d+)?$/;
+
             if (tokens[0] === "(") {
                 tokens.shift();
                 const result = parseExpression();
-                if (tokens.shift() !== ")") throw new Error("Expected closing parenthesis");
+                if (tokens.shift() !== ")") throw new Error("Cerrar los paréntesis!!!!\n");
                 return result;
             } else if (tokens[0] in self.variables) {
                 return ["var", tokens.shift()];
             } else {
+                // Validar si el token actual es un número antes de procesarlo
+                if (!numberPattern.test(tokens[0])) {
+                    throw new Error("Se esperaba un número\n");
+                }
                 return ["num", parseFloat(tokens.shift())];
             }
         }
 
         function parseAssignment() {
             const variable = tokens.shift();
-            if (tokens.shift() !== "=") throw new Error("Expected '='");
+            if (tokens.shift() !== "=") throw new Error("Se esperaba '='\n");
             const expr = parseExpression();
             return ["assign", variable, expr];
         }
 
         function parseCout() {
             tokens.shift(); // Remove 'cout'
-            if (tokens.shift() !== "<" || tokens.shift() !== "<") throw new Error("Expected '<<'");
+            if (tokens.shift() !== "<" || tokens.shift() !== "<") throw new Error("Se esperaba '<<'\n");
             const variable = tokens.shift();
             return ["cout", variable];
         }
@@ -103,19 +110,37 @@ class ArithmeticInterpreter {
                 const op = node[0];
                 switch (op) {
                     case "add":
-                        return evalNode(node[1]) + evalNode(node[2]);
                     case "subtract":
-                        return evalNode(node[1]) - evalNode(node[2]);
                     case "multiply":
-                        return evalNode(node[1]) * evalNode(node[2]);
                     case "divide":
-                        return evalNode(node[1]) / evalNode(node[2]);
+                        const left = evalNode(node[1]);
+                        const right = evalNode(node[2]);
+                        if (typeof left !== "number" || typeof right !== "number") {
+                            throw new Error("Operaciones aritméticas solo permiten números\n");
+                        }
+                        switch (op) {
+                            case "add":
+                                return left + right;
+                            case "subtract":
+                                return left - right;
+                            case "multiply":
+                                return left * right;
+                            case "divide":
+                                return left / right;
+                        }
+                        break;
                     case "assign":
                         const variable = node[1];
                         const value = evalNode(node[2]);
+                        if (typeof value !== "number") {
+                            throw new Error("Asignación solo permite números\n");
+                        }
                         self.variables[variable] = value;
                         return value;
                     case "var":
+                        if (!(node[1] in self.variables)) {
+                            throw new Error(`Variable '${node[1]}' no definida\n`);
+                        }
                         return self.variables[node[1]];
                     case "num":
                         return node[1];
@@ -143,22 +168,33 @@ class ArithmeticInterpreter {
         return results;
     }
 
+    validarExpresion(expression) {
+        const simboloInvalido = /\/\s*$/;
+        const divisionEntreCero = /\/\s*0/;  
+        if (simboloInvalido.test(expression)) {
+            throw new Error("Expresión incompleta: no se puede terminar con una operación de división\n");
+        }
+        if (divisionEntreCero.test(expression)) {
+            throw new Error("No se puede dividir entre cero\n");
+        }
+    }
+
     interpret(expression) {
+        this.validarExpresion(expression);
         const tokens = this.tokenizar(expression);
         const ast = this.parse(tokens);
         return this.evaluate(ast);
     }
 }
+
 function interpretCode() {
     const interpreter = new ArithmeticInterpreter();
     const codeInput = document.getElementById("codeInput");
     const code = codeInput.value.trim();
     const outputElement = document.getElementById("output");
     
-    // Limpiar contenido previo del output
     outputElement.textContent = "";
 
-    // Dividir el código en líneas separadas
     const lines = code.split("\n");
     let coutOutputs = "";
 
@@ -166,7 +202,7 @@ function interpretCode() {
         const trimmedLine = line.trim();
 
         if (trimmedLine === "") {
-            continue; // Saltar líneas vacías
+            continue;
         }
         try {
             const results = interpreter.interpret(trimmedLine);
@@ -187,6 +223,6 @@ function interpretCode() {
         outputElement.textContent += `${coutOutputs}`;
     }
 
-    // Scroll hacia abajo para mostrar la salida más reciente
+    
     outputElement.scrollTop = outputElement.scrollHeight;
 }

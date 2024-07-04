@@ -32,18 +32,29 @@ a{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-
 .output-container {
     margin-top: 20px;
     padding: 10px;
+    display: grid;
     background-color: #f4f4f4;
     border: 1px solid #ccc;
     border-radius: 4px;
+    align-items: center;
+    gap: 10px;
+}
+.display-5{
+    margin: auto;
+    padding: 5px 0px;
+    color: black;
 }
 
 
-
 pre {
-    white-space: pre-wrap;
     font-size: 20px;
+    font-family: sans-serif;
+    margin: auto;
+    color: black;
+}
+#error {
+    color: red;
 }
