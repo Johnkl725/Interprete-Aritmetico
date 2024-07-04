@@ -6,25 +6,41 @@ class ArithmeticInterpreter {
     tokenizar(expression) {
         const tokens = [];
         let currentToken = "";
-        for (const char of expression) {
+        let i = 0;
+
+        function pushToken() {
+            if (currentToken) {
+                tokens.push(currentToken);
+                currentToken = "";
+            }
+        }
+
+        while (i < expression.length) {
+            const char = expression[i];
             if (/[a-zA-Z0-9_]/.test(char)) {
                 currentToken += char;
-            } else if (["+", "-", "*", "/", "(", ")", "=", ",", "<", ">", " "].includes(char)) {
-                if (currentToken) {
-                    tokens.push(currentToken);
-                    currentToken = "";
-                }
+            } else if (["+", "*", "/", "(", ")", "=", ",", "<", ">", " "].includes(char)) {
+                pushToken();
                 if (char !== " ") {
                     tokens.push(char);
                 }
+            } else if (char === "." && currentToken.match(/^\d+$/)) {
+                currentToken += char;
+            } else if (char === "-" && i + 1 < expression.length && /[a-zA-Z0-9_]/.test(expression[i + 1])) {
+                currentToken += char;
+            } else {
+                pushToken();
+                currentToken = char;
+                pushToken();
             }
+
+            i++;
         }
-        if (currentToken) {
-            tokens.push(currentToken);
-        }
+
+        pushToken();
+
         return tokens;
     }
-
     parse(tokens) {
         const self = this;
 
@@ -55,9 +71,7 @@ class ArithmeticInterpreter {
         }
 
         function parseFactor() {
-            // Expresión regular para validar números (enteros y flotantes)
             const numberPattern = /^-?\d+(\.\d+)?$/;
-
             if (tokens[0] === "(") {
                 tokens.shift();
                 const result = parseExpression();
@@ -66,7 +80,6 @@ class ArithmeticInterpreter {
             } else if (tokens[0] in self.variables) {
                 return ["var", tokens.shift()];
             } else {
-                // Validar si el token actual es un número antes de procesarlo
                 if (!numberPattern.test(tokens[0])) {
                     throw new Error("Se esperaba un número\n");
                 }
@@ -82,9 +95,10 @@ class ArithmeticInterpreter {
         }
 
         function parseCout() {
-            tokens.shift(); // Remove 'cout'
+            tokens.shift();
             if (tokens.shift() !== "<" || tokens.shift() !== "<") throw new Error("Se esperaba '<<'\n");
             const variable = tokens.shift();
+            console.log(variable);
             return ["cout", variable];
         }
 
@@ -206,7 +220,7 @@ function interpretCode() {
         }
         try {
             const results = interpreter.interpret(trimmedLine);
-
+            console.log(results);
             for (const result of results) {
                 if (result.type === "cout") {
                     coutOutputs += `${result.value}\n`;
