@@ -19,7 +19,7 @@ class ArithmeticInterpreter {
             const char = expression[i];
             if (/[a-zA-Z0-9_]/.test(char)) {
                 currentToken += char;
-            } else if (["+", "*", "/", "(", ")", "=", ",", "<", ">", " "].includes(char)) {
+            } else if (["+","-","*", "/", "(", ")", "=", ",", "<", ">", " "].includes(char)) {
                 pushToken();
                 if (char !== " ") {
                     tokens.push(char);
